@@ -1,2 +1,3 @@
-# python_basico
-Códigos que estou aprendendo em Python
+# Python_basico
+
+formatos: https://pyformat.info/
