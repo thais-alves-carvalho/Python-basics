@@ -1,4 +1,5 @@
-import os 
+import os
+from ssl import Options 
 import pandas as pd 
 import csv
 import requests
@@ -70,10 +71,69 @@ def exercicio5():
         if dic['Confirmed'] == 1: 
             print( f'primeiro caso de covid no Brasil foi:', dic['Date'])
             break;
+def get_datasets(y,labels):
+    if type(y[0])==list:
+        datasets=[]
+        for i in range(len(y)):
+            datasets.append({
+                'label':labels[i]
+                'data': y=[i]
+            })
+        return datasets
+    else:
+        return [
+            {
+                'label': labels[0],
+                'data':y
+            }
+        ]
+
+def set_title(title=''):
+    if title != '':
+        display='true'
+    else:
+        display='false'
+    return {
+        'title':title,
+        'display':display
+    }
+
+def create_chart(x,y, labels, kind='bar',title=''):
+
+    datasets = get_datasets(y,labels)
+    options = set_title(title)
+
+    chart = {
+        'type':kind,
+        'data':{
+            'labels':x,
+            'datasets':datasets
+        },
+        'options':options
+
+    }
+    return chart
+
+def get_api_chart(chart):
+    url_base='https://quickchart.io/chart'
+    resp = requests.get(f'{url_base}?c={str(chart)}')
+    return resp.content
+
+def sabe_image(path, content):
+    with open(path, 'wb') as image:
+        image.write(content)
+
+from PIL import Image
+from IPython.display import display
+
+def display_image(path):
+    img_pil = Image(path)
+    display(img_pil)
+
 
 def projeto_final():
     
-    url = "https://api.covid19api.com/country/brazil"
+    url = "https://api.covid19api.com/dayone/country/brazil"
     req = requests.get(url)
 
     if req.status_code == 200:
@@ -86,8 +146,16 @@ def projeto_final():
         print( dic['Confirmed'], dic['Deaths'], dic['Recovered'], dic['Active'],dic['Date'])
     lista.insert(0,['Confirmed', 'Deaths','Recovered', 'Active','Date'])
 
-    for i in range(lista): 
-        print(lista[i]['Date'])
+    DATA = 4
+    for i in range(1,len(lista)): 
+        lista[i][DATA] = dt.datetime.strptime(lista[i][DATA][:10], '%Y-%m-%d')
+        print(lista[i][DATA])
+    
+    with open('brasil-covid.csv','w') as file:
+        write = csv.writer(file)
+        write.writerows(lista)
+
+
 
 #exercicio1()
 #exercicio2()
