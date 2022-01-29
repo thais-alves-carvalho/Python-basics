@@ -1,6 +1,8 @@
 import os 
 import pandas as pd 
 import csv
+import requests
+import datetime as dt
 #exercicio 1 
 
 def exercicio1():
@@ -45,13 +47,51 @@ def exercicio3():
     
 def exercicio4():
     url = "https://swapi.dev/api/people/4/"
+    req = requests.get(url)
+
+    if req.status_code == 200:
+        print('requisicao feita com sucesso')
+
+    dados = req.json()
+    print(dados['name'])
     #"name" (nome), "height" 
     #(altura), "mass" (massa) e "birth_year" (ano de nascimento) e imprima cada 
     #dado em uma linha.
 
 def exercicio5():
     url = "https://api.covid19api.com/country/brazil"
+    req = requests.get(url)
+
+    if req.status_code == 200:
+        print('requisicao feita com sucesso')
+    
+    dados = req.json()
+    for dic in dados:
+        if dic['Confirmed'] == 1: 
+            print( f'primeiro caso de covid no Brasil foi:', dic['Date'])
+            break;
+
+def projeto_final():
+    
+    url = "https://api.covid19api.com/country/brazil"
+    req = requests.get(url)
+
+    if req.status_code == 200:
+        print('requisicao feita com sucesso')
+    
+    dados = req.json()
+    lista=[]
+    for dic in dados:  
+        lista.append([dic['Confirmed'], dic['Deaths'], dic['Recovered'], dic['Active'],dic['Date']])      
+        print( dic['Confirmed'], dic['Deaths'], dic['Recovered'], dic['Active'],dic['Date'])
+    lista.insert(0,['Confirmed', 'Deaths','Recovered', 'Active','Date'])
+
+    for i in range(lista): 
+        print(lista[i]['Date'])
+
 #exercicio1()
 #exercicio2()
 #exercicio3()
-exercicio4()
+#exercicio4()
+#exercicio5()
+projeto_final()
