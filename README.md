@@ -13,3 +13,6 @@ Exercícios referentes ao curso let's code
 
 links utéis:
 formatos: https://pyformat.info/
+
+Drive com exercicio 
+https://colab.research.google.com/drive/1gKyGCLAlw63rtF80AilwqqDfkzfuw2L9?authuser=1#scrollTo=MJQFLKTt-Bqo
